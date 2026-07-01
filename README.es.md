@@ -111,19 +111,36 @@ docker run --env-file .env discord-bot
 
 ### Render (gratis)
 
-El bot incluye un servidor HTTP de health-check necesario para Render (el plan gratis duerme el servicio a los 15 min de inactividad; el WebSocket se reconecta al despertar).
+El bot incluye un servidor HTTP de health-check necesario para Render (el plan gratis duerme el servicio a los 15 min de inactividad; el WebSocket se reconecta automáticamente al despertar).
 
+**Opción 1 — Node runtime**
 1. Sube tu repo a GitHub
 2. Ve a [render.com](https://render.com) → **New Web Service** → conecta tu repo
-3. Rellena:
+3. Selecciona **Runtime** → **Node**
+4. Rellena:
 
    | Campo | Valor |
    |---|---|
+   | Branch | `main` |
+   | Root Directory | *(dejar vacío)* |
    | Build Command | `npm install && npm run build` |
    | Start Command | `npm run start` |
    | Plan | **Free** |
-4. Añade las variables de entorno desde `.env` en el panel de Render (nunca las subas al repo)
-5. Despliega
+
+**Opción 2 — Docker runtime** (no necesita build/start command)
+1. Mismos pasos, pero selecciona **Runtime** → **Docker** — Render detecta el `Dockerfile` automáticamente
+
+**Variables de entorno** (añadir en el dashboard de Render):
+
+| Clave | Valor |
+|---|---|
+| `DISCORD_TOKEN` | Token de tu bot |
+| `CLIENT_ID` | ID de tu aplicación |
+| `GUILD_IDS` | ID del servidor (opcional, para comandos instantáneos) |
+| `GEMINI_API_KEY` | API key de Google Gemini |
+| `VALORANT_API_KEY` | API key de HenrikDev |
+| `LOL_API_KEY` | API key de Riot Games |
+| `PORT` | `3000` |
 
 ### Invitar al bot a tu servidor
 

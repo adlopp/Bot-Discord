@@ -111,19 +111,36 @@ docker run --env-file .env discord-bot
 
 ### Render (free tier)
 
-The bot includes an HTTP health-check server needed by Render (free tier sleeps after 15 min of inactivity; WebSocket reconnects on wake).
+The bot includes an HTTP health-check server needed by Render (free tier sleeps after 15 min of inactivity; the WebSocket reconnects automatically on wake).
 
+**Option 1 — Node runtime**
 1. Push your repo to GitHub
 2. Go to [render.com](https://render.com) → **New Web Service** → connect your repo
-3. Fill in:
+3. Set **Runtime** to **Node**
+4. Fill in:
 
    | Field | Value |
    |---|---|
+   | Branch | `main` |
+   | Root Directory | *(leave blank)* |
    | Build Command | `npm install && npm run build` |
    | Start Command | `npm run start` |
    | Plan | **Free** |
-4. Add environment variables from `.env` in the Render dashboard (never commit them)
-5. Deploy
+
+**Option 2 — Docker runtime** (no build/start commands needed)
+1. Same steps, but set **Runtime** to **Docker** — Render will detect the `Dockerfile` automatically
+
+**Environment variables** (add these in the Render dashboard):
+
+| Key | Value |
+|---|---|
+| `DISCORD_TOKEN` | Your bot token |
+| `CLIENT_ID` | Your application ID |
+| `GUILD_IDS` | Server ID(s) for instant commands (optional) |
+| `GEMINI_API_KEY` | Google Gemini API key |
+| `VALORANT_API_KEY` | HenrikDev API key |
+| `LOL_API_KEY` | Riot Games API key |
+| `PORT` | `3000` |
 
 ### Inviting the bot to your server
 
