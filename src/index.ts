@@ -1,3 +1,4 @@
+import { createServer } from "node:http";
 import { Client, Collection, GatewayIntentBits } from "discord.js";
 import { env } from "./config/env.js";
 import { loadEvents } from "./utils/loader.js";
@@ -13,6 +14,14 @@ const client = new Client({
 });
 
 client.commands = new Collection<string, BotCommand>();
+
+const PORT = Number(process.env.PORT) || 3000;
+createServer((_req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("Bot is alive");
+}).listen(PORT, () => {
+  console.log(`HTTP health check server listening on port ${PORT}`);
+});
 
 async function main(): Promise<void> {
   await loadEvents(client);

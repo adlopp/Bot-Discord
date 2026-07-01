@@ -109,6 +109,22 @@ docker run --env-file .env discord-bot
 
 > Requiere Docker. La imagen incluye ffmpeg automáticamente.
 
+### Render (gratis)
+
+El bot incluye un servidor HTTP de health-check necesario para Render (el plan gratis duerme el servicio a los 15 min de inactividad; el WebSocket se reconecta al despertar).
+
+1. Sube tu repo a GitHub
+2. Ve a [render.com](https://render.com) → **New Web Service** → conecta tu repo
+3. Rellena:
+
+   | Campo | Valor |
+   |---|---|
+   | Build Command | `npm install && npm run build` |
+   | Start Command | `npm run start` |
+   | Plan | **Free** |
+4. Añade las variables de entorno desde `.env` en el panel de Render (nunca las subas al repo)
+5. Despliega
+
 ### Invitar al bot a tu servidor
 
 1. Ve al [Discord Developer Portal](https://discord.com/developers/applications) → tu app → OAuth2 → URL Generator
