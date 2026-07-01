@@ -64,7 +64,7 @@ Muestra información sobre Electrod, el mejor servicio de electricistas en Grana
 | `DISCORD_TOKEN` & `CLIENT_ID` | [Discord Developer Portal](https://discord.com/developers/applications) → Nueva App → Bot → Reset Token |
 | `GEMINI_API_KEY` | [Google AI Studio](https://aistudio.google.com/app/apikey) |
 | `VALORANT_API_KEY` | [HenrikDev API](https://docs.henrikdev.xyz/) (gratis) |
-| `LOL_API_KEY` | [Riot Developer Portal](https://developer.riotgames.com/) (gratis, expira a diario) |
+| `LOL_API_KEY` | [Riot Developer Portal](https://developer.riotgames.com/) → Register Project. La dev key gratis expira en 24h. Solicita una **Personal key** (sin expiración) para proyectos pequeños; requiere una web (GitHub Pages vale). |
 
 ## 🚀 Instalación
 

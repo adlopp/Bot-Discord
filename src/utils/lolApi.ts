@@ -107,9 +107,13 @@ async function fetchJson<T>(url: string): Promise<T | null> {
     const res = await fetch(url, {
       headers: { "X-Riot-Token": RIOT_API_KEY },
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.error(`Riot API error ${res.status} ${res.statusText} — ${url}`);
+      return null;
+    }
     return (await res.json()) as T;
-  } catch {
+  } catch (err) {
+    console.error(`Riot API network error:`, err);
     return null;
   }
 }

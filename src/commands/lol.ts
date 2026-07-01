@@ -8,6 +8,7 @@ import {
   parseLolMatches,
 } from "../utils/lolApi.js";
 import type { MatchInfo } from "../utils/lolApi.js";
+import { env } from "../config/env.js";
 
 const command: BotCommand = {
   data: new SlashCommandBuilder()
@@ -24,12 +25,20 @@ const command: BotCommand = {
     const name = interaction.options.getString("nombre", true);
     const tag = interaction.options.getString("tag", true);
 
+    if (!env.lolApiKey) {
+      await interaction.reply({
+        content: "La API key de Riot Games no está configurada. Revisa el archivo `.env`.",
+        ephemeral: true,
+      });
+      return;
+    }
+
     await interaction.deferReply();
 
     const account = await fetchAccountRiot(name, tag);
     if (!account) {
       await interaction.editReply({
-        content: `No se encontró la cuenta **${name}#${tag}**. Verifica el nombre y tag.`,
+        content: `No se encontró la cuenta **${name}#${tag}**. Revisa que el nombre y tag sean correctos, y que la API key de Riot sea válida (expira cada 24h).`,
       });
       return;
     }

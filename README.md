@@ -64,7 +64,7 @@ Shows info about Electrod, the best electrical service in Granada, with a link t
 | `DISCORD_TOKEN` & `CLIENT_ID` | [Discord Developer Portal](https://discord.com/developers/applications) → New Application → Bot → Reset Token |
 | `GEMINI_API_KEY` | [Google AI Studio](https://aistudio.google.com/app/apikey) |
 | `VALORANT_API_KEY` | [HenrikDev API](https://docs.henrikdev.xyz/) (free) |
-| `LOL_API_KEY` | [Riot Developer Portal](https://developer.riotgames.com/) (free, expires daily) |
+| `LOL_API_KEY` | [Riot Developer Portal](https://developer.riotgames.com/) → Register Project. The free dev key expires in 24h. Apply for a **Personal key** (no expiry) for small projects; needs a website (GitHub Pages works). |
 
 ## 🚀 Installation
 
