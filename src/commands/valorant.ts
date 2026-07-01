@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import type { BotCommand } from "../types.js";
-import { fetchAccount, fetchMatches, parseMatches } from "../utils/valorantApi.js";
+import { fetchAccount, fetchMatches, fetchMmrHistory, parseMatches } from "../utils/valorantApi.js";
 
 const command: BotCommand = {
   data: new SlashCommandBuilder()
@@ -35,33 +35,53 @@ const command: BotCommand = {
       return;
     }
 
-    const parsed = parseMatches(matches, account.puuid);
+    const [mmrHistory] = await Promise.all([
+      fetchMmrHistory(name, tag, account.region),
+    ]);
+
+    const parsed = parseMatches(matches, account.puuid, mmrHistory);
 
     const totalKills = parsed.reduce((s, m) => s + m.kills, 0);
     const totalDeaths = parsed.reduce((s, m) => s + m.deaths, 0);
     const totalAssists = parsed.reduce((s, m) => s + m.assists, 0);
     const wins = parsed.filter((m) => m.result === "Victoria").length;
     const avgKd = totalDeaths > 0 ? (totalKills / totalDeaths).toFixed(2) : totalKills.toFixed(2);
+    const currentElo = parsed.find((m) => m.elo !== null)?.elo ?? null;
 
-    const matchesField = parsed
-      .map(
-        (m, i) =>
-          `**${i + 1}.** ${m.result === "Victoria" ? "✅" : "❌"} \`${m.score}\` **${m.agent}**` +
-          ` — ${m.kills}/${m.deaths}/${m.assists} (KD ${m.kdRatio}) — ${m.headshotPercent}% HS — ${m.tierName}`,
-      )
-      .join("\n");
+    const formatMmr = (change: number | null): string => {
+      if (change === null) return "";
+      const sign = change >= 0 ? "+" : "";
+      return ` (${sign}${change} RR)`;
+    };
+
+    const formatMatch = (m: typeof parsed[number], i: number): string =>
+      `**${i + 1}.** ${m.result === "Victoria" ? "✅" : "❌"} \`${m.score}\` **${m.agent}**` +
+      ` ─ ${m.kills}/${m.deaths}/${m.assists} (${m.kdRatio} KD) ${m.acs} ACS` +
+      ` ─ ${m.headshotPercent}% HS\n` +
+      `　　　 ─ **${m.tierName}** │ Sala ${m.lobbyAvgTierName} │ #${m.placement}${formatMmr(m.mmrChange)}`;
+
+    const chunkSize = 5;
+    const fields = [];
+    for (let i = 0; i < parsed.length; i += chunkSize) {
+      const chunk = parsed.slice(i, i + chunkSize);
+      fields.push({
+        name: i === 0 ? `Últimas ${parsed.length} partidas` : "\u200B",
+        value: chunk.map((m, j) => formatMatch(m, i + j)).join("\n"),
+      });
+    }
+
+    const eloText = currentElo !== null ? ` │ ${currentElo} RR` : "";
 
     const embed = new EmbedBuilder()
       .setColor(0xfd4556)
       .setTitle(`Valorant — ${name}#${tag}`)
       .setThumbnail(account.card.small)
       .setDescription(
-        `${account.region.toUpperCase()} · Nivel ${account.account_level}\n` +
+        `\`${account.region.toUpperCase()}\` ─ Nv. ${account.account_level}` +
+          `${eloText}\n` +
           `${parsed.length} partidas · ${wins}V ${parsed.length - wins}D · K/D ${avgKd} · ${totalKills}/${totalDeaths}/${totalAssists}`,
       )
-      .addFields(
-        { name: `Últimas ${parsed.length} partidas`, value: matchesField },
-      )
+      .addFields(...fields)
       .setFooter({
         text: wins > parsed.length - wins
           ? "Relájate Faker."
