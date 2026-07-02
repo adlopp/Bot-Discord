@@ -48,6 +48,15 @@ Muestra:
 → ✅ 1. Faker — 12/2/15 (KDA 13.50) — 280 CS — CLASSIC
 ```
 
+### 🐱 `/gato`
+
+Muestra una imagen aleatoria de un gato desde TheCatAPI.
+
+```
+/gato
+→ 🐱 ¡Mira este gato! (embed con imagen aleatoria)
+```
+
 ### ⚡ `/electrod`
 
 Muestra información sobre Electrod, el mejor servicio de electricistas en Granada, con enlace a su web.
@@ -168,7 +177,8 @@ El bot incluye un servidor HTTP de health-check necesario para Render (el plan g
 │   │   ├── preguntar.ts
 │   │   ├── valorant.ts
 │   │   ├── lol.ts
-│   │   └── electrod.ts
+│   │   ├── electrod.ts
+│   │   └── gato.ts
 │   ├── events/
 │   │   ├── ready.ts
 │   │   └── interactionCreate.ts

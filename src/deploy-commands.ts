@@ -4,8 +4,9 @@ import preguntar from "./commands/preguntar.js";
 import valorant from "./commands/valorant.js";
 import lol from "./commands/lol.js";
 import electrod from "./commands/electrod.js";
+import gato from "./commands/gato.js";
 
-const commands = [preguntar.data.toJSON(), valorant.data.toJSON(), lol.data.toJSON(), electrod.data.toJSON()];
+const commands = [preguntar.data.toJSON(), valorant.data.toJSON(), lol.data.toJSON(), electrod.data.toJSON(), gato.data.toJSON()];
 
 const rest = new REST().setToken(env.discordToken);
 
